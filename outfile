@@ -1,1 +1,11 @@
-       0
+total 56
+-rwxr-xr-x 1 jdebrull 2024_s19 24144 Mar 14 20:36 a.out
+-rw-r--r-- 1 jdebrull 2024_s19     0 Mar 14 20:46 cat
+drwxr-xr-x 2 jdebrull 2024_s19    21 Mar  9 12:29 includes
+-rw-r--r-- 1 jdebrull 2024_s19     0 Mar 14 20:54 infile
+drwxr-xr-x 5 jdebrull 2024_s19    77 Mar 14 20:58 libft
+-rw-r--r-- 1 jdebrull 2024_s19  1599 Mar 14 20:53 Makefile
+drwxr-xr-x 2 jdebrull 2024_s19    20 Mar 14 21:00 objs
+-rw-r--r-- 1 jdebrull 2024_s19   574 Mar 14 20:58 outfile
+-rwxr-xr-x 1 jdebrull 2024_s19 21592 Mar 14 21:00 pipex
+drwxr-xr-x 2 jdebrull 2024_s19    57 Mar 14 14:53 srcs

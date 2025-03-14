@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jdebrull <jdebrull@student.s19.be>         +#+  +:+       +#+        */
+/*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 12:31:26 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/13 19:01:50 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/14 21:06:36 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
+
+
 
 void	free_tab(char	**tab)
 {
@@ -48,9 +50,9 @@ char	*get_path(char	*cmd, char **env)
 	{
 		path = ft_strjoin(tab[i], "/");
 		final_path = ft_strjoin(path, cmd);
-		free(path);
 		if (access(final_path, F_OK | X_OK) == 0)
 			return (free_tab(tab), free(path), final_path);
+		free(path);
 		free(final_path);
 		i++;
 	}
@@ -71,7 +73,7 @@ void	command(char *cmd, char **env)
 	path = get_path(tab[0], env);
 	if (!path)
 	{
-		ft_putstr_fd("command not found: ", 2);
+		ft_putstr_fd("Command not found: ", 2);
 		ft_putendl_fd(tab[0], 2);
 		free_tab(tab);
 		exit (127);
@@ -85,6 +87,45 @@ void	command(char *cmd, char **env)
 	}
 }
 
+char	**make_args(char *av)
+{
+	char	**args;
+	char	*trim;
+
+	args = malloc(sizeof(char*) * 2);
+	if (!args)
+		exit(1);
+	trim = ft_strdup(av + 9);
+	if (!trim)
+	{
+		free(args);
+		exit(1);
+	}
+	args[0] = trim;
+	args[1] = NULL;
+	return(args);
+}
+
+void	cmd_or_path(char *av, char **env)
+{
+	char	**args;
+	
+	args = NULL;
+	if (ft_strncmp("/usr/bin/", av, 9) == 0)
+	{
+		args = make_args(av);
+		if (args && execve(av, args, env) == -1)
+		{
+			perror(args[0]);
+			free(args[0]);
+			free(args);
+			exit(127);
+		}
+	}
+	else
+		command(av, env);
+}
+
 int	opening(char *file, int type)
 {
 	int	i;
@@ -92,15 +133,15 @@ int	opening(char *file, int type)
 	i = 0;
 	if (type == 0)
 	{
-		i = open(file, O_RDONLY, 0644);
+		i = open(file, O_RDONLY);
 		if (i < 0)
-			return (perror("error opening file for reading"), -1);
+			return (perror("Error"), -1);
 	}
 	else if (type == 1)
 	{
 		i = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (i < 0)
-			return (perror("error opening file for reading"), -1);
+			return (perror("Error"), -1);
 	}
 	else
 		return (-1);
@@ -114,35 +155,45 @@ void	child(char **av, int *pipe_fd, char **env)
 	fd = opening(av[1], 0);
 	if (fd < 0)
 		exit (1);
-	dup2(fd, 0);
-	dup2(pipe_fd[1], 1);
+	dup2(fd, STDIN);
+	dup2(pipe_fd[1], STDOUT);
+	close(fd);
 	close(pipe_fd[0]);
-	command(av[1], env);
+	cmd_or_path(av[2], env);
+	
+	exit(127);
 }
 
 void	parent(char **av, int *pipe_fd, char **env)
 {
 	int	fd;
 
-	fd = opening(av[1], 0);
+	fd = opening(av[4], 1);
 	if (fd < 0)
 		exit (1);
-	dup2(fd, 1);
-	dup2(pipe_fd[0], 0);
+	dup2(fd, STDOUT);
+	dup2(pipe_fd[0], STDIN);
+	close(fd);
 	close(pipe_fd[1]);
-	command(av[4], env);
+	cmd_or_path(av[3], env);
+	exit(127);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	pid_t	pid;
+	int		status;
 	int		pipe_fd[2];
 
 	if (ac < 5)
-		exit (-1);
+		exit (1);
 	pipe(pipe_fd);
 	pid = fork();
-	if (pid == 0)
+	if (!pid)
 		child(av, pipe_fd, env);
-	parent(av, pipe_fd, env);
+	else
+	{
+		waitpid(pid, &status, 0);
+		parent(av, pipe_fd, env);
+	}
 }

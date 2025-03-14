@@ -6,7 +6,7 @@
 /*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 12:29:57 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/09 15:12:34 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:50:38 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@
 # include "../libft/includes/libft.h"
 
 # define TEST ft_printf("\n\n\n");
+# define STDIN 0
+# define STDOUT 1
+
 
 #endif

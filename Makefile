@@ -6,7 +6,7 @@
 #    By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/31 14:58:16 by jdebrull          #+#    #+#              #
-#    Updated: 2025/03/09 15:14:04 by jdebrull         ###   ########.fr        #
+#    Updated: 2025/03/14 20:53:28 by jdebrull         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRCDIR = srcs
 OBJDIR = objs
 LIBFTDIR = libft
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(LIBFTDIR) 
+CFLAGS = -Wall -Wextra -Werror -I $(LIBFTDIR)
 LIBFT = -L$(LIBFTDIR) -lft
 
 SRCS = $(addprefix $(SRCDIR)/, main.c)
