@@ -6,7 +6,7 @@
 #    By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/31 14:58:16 by jdebrull          #+#    #+#              #
-#    Updated: 2025/03/14 20:53:28 by jdebrull         ###   ########.fr        #
+#    Updated: 2025/03/15 14:37:34 by jdebrull         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I $(LIBFTDIR)
 LIBFT = -L$(LIBFTDIR) -lft
 
-SRCS = $(addprefix $(SRCDIR)/, main.c)
+SRCS = $(addprefix $(SRCDIR)/, main.c utils.c)
 OBJS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
 
 NAME = pipex
