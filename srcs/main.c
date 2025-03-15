@@ -6,7 +6,7 @@
 /*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 12:31:26 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/15 16:52:01 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/15 17:33:31 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	child(char **av, int *pipe_fd, char **env)
 	dup2(pipe_fd[1], STDOUT);
 	close(fd_in);
 	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 	cmd_or_path(av[2], env);
 	exit(1);
 }
@@ -60,6 +61,7 @@ void	parent(char **av, int *pipe_fd, char **env)
 	dup2(pipe_fd[0], STDIN);
 	close(fd_out);
 	close(pipe_fd[1]);
+	close(pipe_fd[0]);
 	cmd_or_path(av[3], env);
 	exit(1);
 }

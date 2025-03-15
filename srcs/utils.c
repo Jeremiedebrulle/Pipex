@@ -6,7 +6,7 @@
 /*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:47:09 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/15 17:09:15 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/15 18:22:00 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	command(char *cmd, char **env)
 		ft_putstr_fd("Error command not found: ", 2);
 		ft_putendl_fd(cmd_tab[0], 2);
 		free_tab(cmd_tab);
-		exit (1);
+		exit (127);
 	}
 	if (execve(path, cmd_tab, env) == -1)
 	{
@@ -108,14 +108,15 @@ void	cmd_or_path(char *av, char **env)
 	char	**args;
 
 	args = ft_split(av, ' ');
-	if (!args)
+	if (!args || !args[0])
 	{
+		free_tab(args);
 		ft_putstr_fd("Error with memory allocation", 2);
 		exit (1);
 	}
 	if (access(args[0], F_OK | X_OK) == 0)
 	{
-		if (args && execve(args[0], args, env) == -1)
+		if (execve(args[0], args, env) == -1)
 		{
 			perror(args[0]);
 			free_tab(args);
