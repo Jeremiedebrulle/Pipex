@@ -6,7 +6,7 @@
 /*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:47:09 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/15 15:18:39 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/15 17:09:15 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,21 +107,14 @@ void	cmd_or_path(char *av, char **env)
 {
 	char	**args;
 
-	args = NULL;
-	if (ft_strncmp("/usr/bin/", av, 9) == 0)
+	args = ft_split(av, ' ');
+	if (!args)
 	{
-		args = ft_split(av, ' ');
-		if (!args)
-		{
-			ft_putstr_fd("Error with memory allocation", 2);
-			exit (1);
-		}
-		if (access(args[0], F_OK | X_OK) != 0)
-		{
-			perror(args[0]);
-			free_tab(args);
-			exit (1);
-		}
+		ft_putstr_fd("Error with memory allocation", 2);
+		exit (1);
+	}
+	if (access(args[0], F_OK | X_OK) == 0)
+	{
 		if (args && execve(args[0], args, env) == -1)
 		{
 			perror(args[0]);
@@ -129,5 +122,7 @@ void	cmd_or_path(char *av, char **env)
 			exit(1);
 		}
 	}
+	else
+		free_tab(args);
 	command(av, env);
 }

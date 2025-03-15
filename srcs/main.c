@@ -6,7 +6,7 @@
 /*   By: jdebrull <jdebrull@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 12:31:26 by jdebrull          #+#    #+#             */
-/*   Updated: 2025/03/15 13:58:33 by jdebrull         ###   ########.fr       */
+/*   Updated: 2025/03/15 16:52:01 by jdebrull         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ int	main(int ac, char **av, char **env)
 		ft_putstr_fd("Error number of args", 2);
 		exit (1);
 	}
-	if (ac == 5)
-	{
+	else if (ac == 5)
 		args_handler(av, env);
-	}
 	return (0);
 }
